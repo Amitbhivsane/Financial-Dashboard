@@ -2,9 +2,9 @@ import axios from "axios";
 
 const API = axios.create({
   baseURL:
-    process.env.NODE_ENV === "development"
+    typeof window !== "undefined" && window.location.hostname === "localhost"
       ? "http://localhost:5001/api"
-      : "/api",
+      : "https://your-backend-service.onrender.com/api", // your Render backend URL
 });
 
 // Transactions
