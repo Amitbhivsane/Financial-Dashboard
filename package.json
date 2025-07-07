@@ -7,12 +7,7 @@
     "build": "npm run build --prefix frontend",
     "start": "concurrently \"npm start --prefix backend\" \"npm start --prefix frontend\""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "devDependencies": {
-    "concurrently": "^8.2.2",
-    "cross-env": "^7.0.3"
+    "concurrently": "^8.2.2"
   }
 }
