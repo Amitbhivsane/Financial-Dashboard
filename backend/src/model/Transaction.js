@@ -2,11 +2,7 @@ import mongoose from "mongoose";
 
 const TransactionSchema = new mongoose.Schema({
   amount: { type: Number, required: true },
-  date: {
-    type: Date,
-    required: true,
-    default: Date.now, // auto-assign current time
-  },
+  date: { type: Date, required: true, default: Date.now },
   description: { type: String, required: true },
   category: {
     type: String,
@@ -15,6 +11,6 @@ const TransactionSchema = new mongoose.Schema({
   },
 });
 
-// ✅ Export as default
+// ✅ Default export
 const Transaction = mongoose.model("Transaction", TransactionSchema);
 export default Transaction;
