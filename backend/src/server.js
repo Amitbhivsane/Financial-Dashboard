@@ -16,7 +16,7 @@ const HOST = process.env.HOST || "0.0.0.0"; // Bind to all interfaces (safe for 
 // ✅ Allow both local and deployed frontend origins
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://financial-dashboard-frontend.onrender.com", // ✅ Replace with your deployed frontend
+  "https://financial-dashboard-b1ot.onrender.com", // ✅ Replace with your deployed frontend
 ];
 
 // Middleware
