@@ -8,18 +8,22 @@ import transactionRoutes from "./routes/transactions.js";
 import budgetRoutes from "./routes/budgets.js";
 
 const app = express();
+
+// Load from environment or fallback
 const PORT = process.env.PORT || 5001;
+const HOST = process.env.HOST || "0.0.0.0"; // Bind to all interfaces (safe for Render/Docker)
 
 // ✅ Allow both local and deployed frontend origins
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://financial-dashboard-frontend.onrender.com", // ✅ replace with real Render frontend
+  "https://financial-dashboard-frontend.onrender.com", // ✅ Replace with your deployed frontend
 ];
 
+// Middleware
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow Postman or no origin (server-to-server)
+      // Allow Postman and internal requests (no origin)
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -32,17 +36,17 @@ app.use(
 
 app.use(express.json());
 
-// ✅ Routes
+// API Routes
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/budgets", budgetRoutes);
 
-// Optional: fallback 404 handler
+// 404 Handler
 app.use((req, res) => {
   res.status(404).json({ error: "Route not found" });
 });
 
-// ✅ Start server
-app.listen(PORT, () => {
-  console.log(`✅ Server running on port: ${PORT}`);
+// Start Server
+app.listen(PORT, HOST, () => {
+  console.log(`✅ Server running at http://${HOST}:${PORT}`);
   connectDB();
 });
