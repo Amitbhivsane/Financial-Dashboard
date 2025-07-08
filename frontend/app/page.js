@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { fetchTransactions, fetchBudgets } from "../lib/api";
 
 import TransactionForm from "../components/components/TransactionForm";
 import TransactionList from "../components/components/TransactionList";
@@ -10,7 +10,6 @@ import BudgetForm from "../components/components/BudgetForm";
 import BudgetVsActualChart from "../components/components/BudgetVsActualChart";
 import DashboardSummary from "../components/components/DashboardSummary";
 
-import { fetchTransactions } from "../lib/api";
 import { groupByMonth } from "../utils/dataUtils";
 import { groupByCategory } from "../utils/categoryUtils";
 import { compareBudgetToActual } from "../utils/budgetUtils";
@@ -19,14 +18,24 @@ export default function Home() {
   const [transactions, setTransactions] = useState([]);
   const [budgets, setBudgets] = useState([]);
 
+  // Load transactions from API
   const loadTransactions = async () => {
-    const { data } = await fetchTransactions();
-    setTransactions(data);
+    try {
+      const { data } = await fetchTransactions();
+      setTransactions(data);
+    } catch (error) {
+      console.error("Failed to load transactions:", error.message);
+    }
   };
 
+  // Load budgets from API
   const loadBudgets = async () => {
-    const res = await axios.get("http://localhost:5001/api/budgets");
-    setBudgets(res.data);
+    try {
+      const { data } = await fetchBudgets();
+      setBudgets(data);
+    } catch (error) {
+      console.error("Failed to load budgets:", error.message);
+    }
   };
 
   useEffect(() => {
@@ -84,7 +93,6 @@ export default function Home() {
         <h3 className="text-lg font-medium">By Category</h3>
         <CategoryPieChart data={groupByCategory(transactions)} />
         <h2 className="text-xl font-semibold">Transactions List</h2>
-
         <TransactionList
           transactions={transactions}
           onDelete={loadTransactions}
