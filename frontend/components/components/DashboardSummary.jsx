@@ -1,6 +1,16 @@
 import { Card, CardContent } from "@/components/ui/card";
 
-export default function DashboardSummary({ totalBudget, totalActual, recent }) {
+export default function DashboardSummary({
+  totalBudget = 0,
+  totalActual = 0,
+  recent = [],
+}) {
+  // Sort and get the latest transaction if available
+  const latest =
+    recent.length > 0
+      ? [...recent].sort((a, b) => new Date(b.date) - new Date(a.date))[0]
+      : null;
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {/* Total Budget */}
@@ -22,16 +32,19 @@ export default function DashboardSummary({ totalBudget, totalActual, recent }) {
       {/* Most Recent Transaction */}
       <Card>
         <CardContent className="p-4">
-          <p className="text-sm text-muted-foreground">Recent Transaction</p>
-          {recent.length > 0 ? (
+          <p className="text-sm text-muted-foreground">Latest Transaction</p>
+          {latest ? (
             <>
-              <h2 className="font-medium">{recent[0].description}</h2>
+              <h2 className="font-medium">{latest.description}</h2>
               <p className="text-xs text-gray-500">
-                {new Date(recent[0].date).toDateString()}
+                {new Date(latest.date).toLocaleString("en-IN", {
+                  dateStyle: "full",
+                  timeStyle: "short",
+                })}
               </p>
-              <p className="text-sm text-gray-700">₹{recent[0].amount}</p>
+              <p className="text-sm text-gray-700">₹{latest.amount}</p>
               <p className="text-sm text-gray-600">
-                Category: {recent[0].category}
+                Category: {latest.category}
               </p>
             </>
           ) : (

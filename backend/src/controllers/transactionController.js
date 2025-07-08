@@ -1,30 +1,24 @@
 import Transaction from "../model/Transaction.js";
 
-// GET /api/transactions
-export const getTransactions = async (req, res) => {
-  try {
-    const transactions = await Transaction.find().sort({ date: -1 });
-    res.status(200).json(transactions);
-  } catch (error) {
-    console.error("❌ Error fetching transactions:", error);
-    res.status(500).json({ error: "Failed to fetch transactions" });
-  }
-};
-
 // POST /api/transactions
 
 export const addTransaction = async (req, res) => {
   try {
-    const { amount, date, description, category } = req.body;
+    let { amount, date, description, category } = req.body;
 
-    // Basic validation
-    if (!amount || !date || !description) {
-      return res
-        .status(400)
-        .json({ error: "Amount, date, and description are required" });
+    // Validate required fields
+    if (!amount || !description) {
+      return res.status(400).json({
+        error: "Amount and description are required",
+      });
     }
 
-    // Optional: Validate category only if provided
+    // If date not provided, use current time
+    if (!date) {
+      date = new Date();
+    }
+
+    // Validate category if present
     const allowedCategories = [
       "Food",
       "Travel",
@@ -46,6 +40,17 @@ export const addTransaction = async (req, res) => {
   } catch (error) {
     console.error("❌ Error adding transaction:", error);
     res.status(500).json({ error: "Failed to add transaction" });
+  }
+};
+
+// GET /api/transactions
+export const getTransactions = async (req, res) => {
+  try {
+    const transactions = await Transaction.find().sort({ date: -1 });
+    res.status(200).json(transactions);
+  } catch (error) {
+    console.error("❌ Error fetching transactions:", error);
+    res.status(500).json({ error: "Failed to fetch transactions" });
   }
 };
 

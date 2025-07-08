@@ -17,10 +17,22 @@ export default function TransactionForm({ onSuccess }) {
     e.preventDefault();
 
     try {
-      console.log("Submitting form data:", form); // 🔍 log the payload
-      const response = await createTransaction(form);
-      console.log("Transaction created:", response.data);
+      // Combine selected date with current time
+      const selectedDate = new Date(form.date); // from date input (e.g., 2025-07-08)
+      const now = new Date(); // get current time
 
+      // Set hours/minutes/seconds from now to selectedDate
+      selectedDate.setHours(now.getHours());
+      selectedDate.setMinutes(now.getMinutes());
+      selectedDate.setSeconds(now.getSeconds());
+
+      const response = await createTransaction({
+        ...form,
+        amount: Number(form.amount),
+        date: selectedDate.toISOString(), // full timestamp
+      });
+
+      console.log("Transaction created:", response.data);
       onSuccess();
       setForm({ amount: "", date: "", description: "", category: "" });
     } catch (error) {
