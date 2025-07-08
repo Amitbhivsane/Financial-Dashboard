@@ -4,7 +4,7 @@ const API = axios.create({
   baseURL:
     typeof window !== "undefined" && window.location.hostname === "localhost"
       ? "http://localhost:5001/api"
-      : "/api", // ✅ Replace with real URL
+      : "https://financial-dashboard-jonz.onrender.com/api", // ✅ Replace with real URL
 });
 
 // Transactions
