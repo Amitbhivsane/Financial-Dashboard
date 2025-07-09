@@ -10,7 +10,7 @@ import budgetRoutes from "./routes/budgets.js";
 const app = express();
 
 // Load from environment or fallback
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 10000;
 const HOST = process.env.HOST || "0.0.0.0"; // Bind to all interfaces (safe for Render/Docker)
 
 // ✅ Allow both local and deployed frontend origins
